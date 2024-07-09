@@ -1,0 +1,3 @@
+iniciar um projeto npm = npm init
+Responde o questionario e cria uma arquivo de configuração 
+com todas as perguntas que foram feita, package.json

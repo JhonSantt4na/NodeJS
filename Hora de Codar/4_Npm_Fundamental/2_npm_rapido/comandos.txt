@@ -1,0 +1,4 @@
+Para iniciar um projeto de forma default =
+npm init -y
+o -y significa que é sim para todas as perguntas do questionari
+e depois podemos mudar o que quiser
