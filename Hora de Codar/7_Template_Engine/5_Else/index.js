@@ -10,8 +10,6 @@ app.get('/dashbord', (req, res) => {
     res.render('dashbord')
 })
 
-
-
 app.get('/', (req, ress) => {
     const user = {
         name: "Jorge",
@@ -19,10 +17,11 @@ app.get('/', (req, ress) => {
     }
     const palavra = "Amor"
 
-    // exemplo de autenticação
-    const auth = true
+    // exemplo de autenticação para usar o else
+    const auth = false
+    const approved = false
 
-    ress.render('home', { user: user, palavra, auth })
+    ress.render('home', { user: user, palavra, auth, approved })
 })
 
 app.listen(3001, () => {

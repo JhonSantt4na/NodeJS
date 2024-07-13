@@ -1,4 +1,10 @@
 <h1>O nome do Usuario é {{user.name}} {{user.surname}}</h1>
+{{#if approved}}
+    <p>Parabens você foi aprovado</p>
+{{else}}
+    <p>Seu cadastro precisa de aprovação</p>
+{{/if}}
+
 <h2>Olá mundo {{palavra}}</h2>
 {{!-- Se vim verdade em auth > ele imprime isso aqui embaixo --}}
 {{#if auth}}
