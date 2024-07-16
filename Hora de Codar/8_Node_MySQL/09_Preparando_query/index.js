@@ -83,7 +83,6 @@ app.get('/books/edit/:id', (req, res) => {
     })
 })
 
-
 app.post('/books/updatebook', (req, res) => {
     const id = req.body.id
     const title = req.body.title
