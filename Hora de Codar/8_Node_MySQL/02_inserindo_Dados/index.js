@@ -1,14 +1,21 @@
-const express = require('express');
+const express = require('express')
 const exhbs = require("express-handlebars");
 const mysql = require('mysql');
 
-require('dotenv').config();
 const app = express();
+require('dotenv').config();
+app.use(
+    express.urlencoded({
+        extends: true,
+    })
+)
+
+app.use(express.json())
 
 app.engine('handlebars', exhbs.engine())
 app.set('view engine', 'handlebars')
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 app.get('/', (req, ress) => {
     ress.render('home')
@@ -23,11 +30,15 @@ const conn = mysql.createConnection({
 })
 // Estabelecendo a conecxão
 
+app.post
+
+
+
 conn.connect(function (err) {
     if (err) {
         console.log(err)
     }
     console.log('Conectou Ao Banco')
-    app.listen(3002);
+    app.listen(3030);
 })
 
