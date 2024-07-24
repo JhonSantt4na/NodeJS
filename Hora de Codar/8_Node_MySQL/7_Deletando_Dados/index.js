@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql');
 
 const app = express();
+require('dotenv').config();
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
@@ -103,10 +104,10 @@ app.post('/books/remove/:id', (req, res) => {
 })
 
 const conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'nodemysql'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DBS
 })
 
 conn.connect(function (err) {

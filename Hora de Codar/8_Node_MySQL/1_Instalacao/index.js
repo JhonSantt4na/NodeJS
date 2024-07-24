@@ -3,6 +3,8 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql');
 
 const app = express();
+require('dotenv').config();
+
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
