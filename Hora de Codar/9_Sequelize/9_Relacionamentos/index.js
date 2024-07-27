@@ -3,6 +3,8 @@ const exphbs = require('express-handlebars');
 const conn = require('./db/conn')
 
 const User = require('./models/User');
+const Address = require('./models/Address');
+
 const { where } = require('sequelize');
 
 const app = express();
@@ -82,8 +84,8 @@ app.get('/', async (req, res) => {
     res.render('home', { users });
 });
 
-conn.sync()
-    //.sync({ force: true }) quando for resetar, perde os dados mas cria as estruturas
+conn//.sync()
+    .sync({ force: true }) // quando for resetar, perde os dados mas cria as estruturas
     .then(() => {
         app.listen(3001);
     })
