@@ -2,9 +2,10 @@ const express = require('express');
 const exphbs = require('express-handlebars')
 require('dotenv').config();
 
-const app = express();
 const conn = require('./db/conn');
+const Task = require('./models/Task')
 
+const app = express();
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
@@ -18,5 +19,12 @@ app.use(
     })
 )
 
+// Sicronizando a inicialização do server com a criação do model ou tabela
 const port = process.env.PORT;
-app.listen(port);
+
+conn.sync()
+    .then(() => {
+        app.listen(port);
+    }).catch((err) => {
+        console.log(err);
+    })

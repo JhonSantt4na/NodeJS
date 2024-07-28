@@ -1,15 +1,15 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const DBS = process.env.DB_DBS;
-const USER = process.env.DB_USER;
-const PASS = process.env.DB_PASS;
-const HOST = process.env.DB_HOST;
+const host = process.env.DB_HOST
+const user = process.env.DB_USER
+const pass = process.env.DB_PASS
+const dbs = process.env.DB_DBS
 
-const sequelize = new Sequelize(DBS, USER, PASS, {
-    host: HOST,
+const sequelize = new Sequelize(dbs, user, pass, {
+    host: host,
     dialect: 'mysql'
-})
+});
 
 try {
     sequelize.authenticate()
@@ -18,5 +18,4 @@ try {
     console.log(`Não Foi Possivel Conectar: ${err}`)
 }
 
-
-exports.default = sequelize;
+module.exports = sequelize;
