@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const flash = require('connect-flash');
@@ -23,7 +24,7 @@ app.set('views', 'views');                      // Adicionado a pasta Views para
 // Middlewares 
 app.use(flash())                  // Flash messagens
 app.use(express.json())           // Poder receber Json no corpo das req
-app.use(express.static('public')) // Pasta de Assetes
+app.use(express.static(path.join(__dirname, 'public'))) // Pasta de Assetes
 app.use(
     express.urlencoded({
         extends: true
@@ -40,7 +41,7 @@ app.use(
         store: new FileStore({      // onde vamos salvar
             // Configuraçções do FileStore
             logFn: function () { },    // config para configurar session por arquivos
-            path: require('path').join(require('os').tmpdir(), 'sessions'),
+            path: path.join(require('os').tmpdir(), 'sessions'),
             // Basicamente mostra o caminho onde vai ter os arquivos temporarios da sessions
         }),
         cookie: {
