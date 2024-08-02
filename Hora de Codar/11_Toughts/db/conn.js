@@ -6,7 +6,6 @@ const DB_USER = process.env.DB_USER;
 const DB_PASS = process.env.DB_PASS;
 const DB_HOST = process.env.DB_HOST;
 
-
 const sequelize = new Sequelize(DB_DBS, DB_USER, DB_PASS, {
     host: DB_HOST,
     dialect: 'mysql'
@@ -14,11 +13,9 @@ const sequelize = new Sequelize(DB_DBS, DB_USER, DB_PASS, {
 
 try {
     sequelize.authenticate()
-    console.log('Conectamos com Sucesso!')
+    console.log("Conectamos Com Sucesso !")
 } catch (err) {
-    console.log(`Não foi Possivel Conectar ${err}`)
+    console.log('Não Foi Possivel Conectar:', err)
 }
 
 module.exports = sequelize;
-
-
