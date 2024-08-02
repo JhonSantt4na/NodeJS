@@ -6,11 +6,17 @@ const FileStore = require('session-file-store')(session);
 const flash = require('connect-flash');
 require('dotenv').config();
 
-// Imp : Conexão + app + Routes + Controllers
+// Imp : Conexão + app 
 const app = express();
 const conn = require('./db/conn');
+
+// Routes
 const toughtsRoutes = require('./routers/toughtsRoutes');
-const ToughtController = require('./controllers/ToughtController')
+const authRoutes = require('./routers/authRoutes')
+
+// Controllers
+const ToughtController = require('./controllers/ToughtController');
+const AuthController = require('./controllers/AuthController');
 
 // Imp: Models
 const Tought = require('./models/Tought');
@@ -30,6 +36,7 @@ app.use(
         extends: true
     })
 )
+
 // Session
 const SECRET_SESSION = process.env.SECRET_SESSION
 app.use(
@@ -52,6 +59,7 @@ app.use(
         }
     })
 )
+
 // Middleware de Session (Se o User tiver cookies agente pega para manter se não tiver passa)
 app.use((req, res, next) => {
     if (req.session.userid) {
@@ -63,8 +71,11 @@ app.use((req, res, next) => {
 
 // Routers
 app.use('/toughts', toughtsRoutes)
+app.use('/', authRoutes)
 
 app.get('/', ToughtController.showToughts)
+
+
 
 // Iniciando o Servidor
 conn
