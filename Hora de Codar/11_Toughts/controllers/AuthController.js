@@ -13,14 +13,53 @@ module.exports = class AuthController {
 
     static async registerPost(req, res) {
         // Pegadno todos os dados do body
-        const { name, email, password, confirmPassword } = req.body
+        const { name, email, password, confirmpassword } = req.body
         // password match validation
-        if (password != confirmPassword) {
-            // Usando flash cards
-            req.flash('message', 'As Senhas não Confere, Tente novamente')
-            res.render('auth/register')
-
+        if (password != confirmpassword) {
+            // Se for diferente, manda uma msg para o front
+            req.flash('message', "As Senhas não confere, Tente Novamente!")
+            res.render('auth/register');
             return
         }
+        // Check if user Exists
+        const checkIfUserExists = await User.findOne({ where: { email } })
+        if (checkIfUserExists) {
+            req.flash('message', "O e-mail já está em uso!")
+            res.render('auth/register');
+        }
+
+        // creat a password
+
+        // salt = dificulta a senha
+        const salt = bcrypt.genSaltSync(10);
+        // Criando a senha com o salt
+        const hashedPassword = bcrypt.hashSync(password, salt)
+        // Preparando o usuario para mandar para o banco
+        const user = {
+            name,
+            email,
+            password: hashedPassword // Já mandamos a senha com o salt para o banco nunca manda dados sensiveis
+            // Não mandamos a confirmação pois não é necessario
+        }
+        //  Criando o user no banco 
+        try {
+            await User.create(user);
+
+            // initialize session - Autenticando ja ao logar
+            req.session.userid = user.id
+
+            // mandando a msg de login
+            req.flash('message', 'Cadastro realizado com sucesso!')
+
+            // Salvando a session antes de redirecionar
+            req.session.save(() => {
+                // Redirecionando
+                res.redirect('/');
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+
     }
 }
