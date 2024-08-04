@@ -43,10 +43,10 @@ module.exports = class AuthController {
         }
         //  Criando o user no banco 
         try {
-            await User.create(user);
+            const createUser = await User.create(user);
 
             // initialize session - Autenticando ja ao logar
-            req.session.userid = user.id
+            req.session.userid = createUser.id
 
             // mandando a msg de login
             req.flash('message', 'Cadastro realizado com sucesso!')
@@ -61,5 +61,12 @@ module.exports = class AuthController {
             console.log(err)
         }
 
+
     }
+
+    static logout(req, res) {
+        req.session.destroy();
+        res.redirect('/login')
+    }
+
 }
