@@ -18,10 +18,9 @@ module.exports = class AuthController {
             res.render('auth/login');
             return
         }
-
         // Check if passwords mach
-        const passwordMach = bcrypt.compareSync(password, user.password)
-        if (!passwordMach) {
+        const passwordMatch = bcrypt.compareSync(password, user.password)
+        if (!passwordMatch) {
             req.flash('message', 'Senha invalida!')
             res.render('auth/login');
             return
@@ -93,8 +92,6 @@ module.exports = class AuthController {
         } catch (err) {
             console.log(err)
         }
-
-
     }
 
     static logout(req, res) {
