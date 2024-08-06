@@ -13,11 +13,19 @@ module.exports = class ToughtController {
             search = req.query.search
         }
 
+        let order = "DESC"
+        if (req.query.order === 'old') {
+            order = 'ASC'
+        } else {
+            order = "DESC"
+        }
+
         const toughtsData = await Tought.findAll({
             include: User,
             where: {
                 title: { [Op.like]: `%${search}%` },
             },
+            order: [['createdAt', order]],
         });
         const toughts = toughtsData.map((result) => result.get({ plain: true })) // sendo assim todos ficam no mesmo array
         let toughtsQty = toughts.length
