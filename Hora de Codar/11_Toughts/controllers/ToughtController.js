@@ -1,9 +1,30 @@
+const { where } = require('sequelize');
 const Tought = require('../models/Tought');
 const User = require('../models/User')
 
+const { Op } = require('sequelize');
+
+
 module.exports = class ToughtController {
     static async showToughts(req, res) {
-        res.render('toughts/home')
+
+        let search = ''
+        if (req.query.search) {
+            search = req.query.search
+        }
+
+        const toughtsData = await Tought.findAll({
+            include: User,
+            where: {
+                title: { [Op.like]: `%${search}%` },
+            },
+        });
+        const toughts = toughtsData.map((result) => result.get({ plain: true })) // sendo assim todos ficam no mesmo array
+        let toughtsQty = toughts.length
+        if (toughtsQty === 0) {
+            toughtsQty = false // Pois o 0 para o handlebars significa falso
+        }
+        res.render('toughts/home', { toughts, search, toughtsQty })
     }
 
     static async dashboard(req, res) {
@@ -24,7 +45,13 @@ module.exports = class ToughtController {
         // Pegando somente as tarefas em cada interação
         const toughts = user.Toughts.map((result) => result.dataValues)
 
-        res.render('toughts/dashboard', { toughts })
+        let emptyToughts = false
+
+        if (toughts.length === 0) {
+            emptyToughts = true
+        }
+
+        res.render('toughts/dashboard', { toughts, emptyToughts })
     }
 
     static createTought(req, res) {
@@ -69,4 +96,28 @@ module.exports = class ToughtController {
         }
     }
 
+    static async updateTought(req, res) {
+        const id = req.params.id
+        const tought = await Tought.findOne({ where: { id: id }, raw: true })
+        res.render('toughts/edit', { tought })
+    }
+
+    static async updateToughtSave(req, res) {
+        const id = req.body.id
+        const tought = {
+            title: req.body.title
+        }
+        try {
+
+            await Tought.update(tought, { where: { id: id } })
+            req.flash('message', "Pensamento atualizado com sucesso!")
+
+            req.session.save(() => {
+                res.redirect('/toughts/dashboard')
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 }
