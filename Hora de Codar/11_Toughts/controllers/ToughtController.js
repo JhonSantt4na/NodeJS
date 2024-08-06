@@ -7,7 +7,24 @@ module.exports = class ToughtController {
     }
 
     static async dashboard(req, res) {
-        res.render('toughts/dashboard')
+        const userId = req.session.userid
+
+        // Verificando se o user existe pelo id
+        const user = await User.findOne({
+            where: {
+                id: userId,
+            },
+            include: Tought, // Com esse motodo do sequelize ja trazemos todos os pensamentos juntos
+            plain: true,
+        })
+        if (!user) {
+            res.redirect('/login')
+        }
+
+        // Pegando somente as tarefas em cada interação
+        const toughts = user.Toughts.map((result) => result.dataValues)
+
+        res.render('toughts/dashboard', { toughts })
     }
 
     static createTought(req, res) {
