@@ -1,6 +1,7 @@
 const getToken = require('../helpers/get-token')
 const createUserToken = require('../helpers/create-user-token');
 const getUserByToken = require('../helpers/get-user-by-token')
+const { imageUpload } = require('../helpers/image-upload')
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv').config()
@@ -142,7 +143,11 @@ module.exports = class UserController {
         const token = getToken(req)
         const user = await getUserByToken(token)
         const { name, email, phone, password, confirmpassword } = req.body
-        let image = ""
+
+        if (req.file) {
+            user.image = req.file.filename
+        }
+
 
         // Validation
         if (!name) {
@@ -188,7 +193,7 @@ module.exports = class UserController {
                 { $set: user },
                 { new: true }
             )
-            res.status(200).json({
+            res.json({
                 message: "Usuário atualizado com sucesso!"
             })
         } catch (err) {
