@@ -36,4 +36,4 @@ const Pet = mongoose.model(
     ),
 )
 
-Module.exports = Pet
+module.exports = Pet
