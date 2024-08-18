@@ -1,22 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 
-const app = express()
+const app = express();
 
 // Config JSON response
 app.use(express.json());
 
 // Solve CORS
-app.use(cors({ Credentials: true, origin: "http://localhost:3000" }))
+app.use(cors({ Credential: true, origin: 'http://localhost:3000' }))
 
-// Public folder for images 
+// Public folder for images
 app.use(express.static('public'))
 
-// Routers
-const UserRoutes = require('./routes/UserRoutes')
-const PetsRoutes = require('./routes/PetsRoutes')
+// Routes
 
-app.use('/users', UserRoutes)
-app.use('/pets', PetsRoutes)
-
-app.listen(5000); 
+app.listen(5000, () => {
+   console.log('Serve is Run')
+})

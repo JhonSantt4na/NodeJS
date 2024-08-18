@@ -1,4 +1,3 @@
 node_modules
+public
 .env
-public/images/pets
-public/images/users
