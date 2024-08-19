@@ -23,10 +23,9 @@ const User = mongoose.model(
          type: String,
          required: true
       }
-   })
+   },
+      { timestamps: true },
+   )
 )
-
-
-
 
 module.exports = User
