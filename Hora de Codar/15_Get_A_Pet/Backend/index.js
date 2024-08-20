@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const UserRoutes = require('./routes/UserRoutes')
+const PetsRoutes = require('./routes/PetsRoutes')
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.static('public'))
 
 // Routes
 app.use('/users', UserRoutes)
+app.use('/pets', PetsRoutes)
 
 app.listen(5000, () => {
    console.log('Server is running')
