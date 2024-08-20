@@ -149,11 +149,15 @@ module.exports = class UserController {
       //Check if the id params exists in db
       const id = req.params.id
       const { name, email, phone, password, confirmPassword } = req.body
-      let image = ''
 
       // Check if user exists
       const token = getToken(req)
       const user = await getUserByToken(token)
+
+      // images with multer
+      if (req.file) {
+         user.image = req.file.filename
+      }
 
       // Validation
       if (!name) {
