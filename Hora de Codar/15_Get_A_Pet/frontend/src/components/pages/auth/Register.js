@@ -2,10 +2,14 @@ import Input from '../../form/Input.js'
 import styles from '../../form/Form.module.css'
 
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+
+// Context
+import { Context } from '../../../context/UserContext.js'
 
 function Register() {
    const [user, setUser] = useState({})
+   const { register } = useContext(Context)
 
    function handleChange(event) {
       setUser({ ...user, [event.target.name]: event.target.value })
@@ -14,7 +18,7 @@ function Register() {
    function handleSubmit(event) {
       event.preventDefault()
       // Enviar o usuario para o banco
-      console.log(user)
+      register(user)
    }
 
    return (
@@ -50,10 +54,10 @@ function Register() {
                handleOnChange={handleChange}
             />
             <Input
-               text="Confirmação de Senha"
+               text="Confirmação de senha"
                type="password"
-               name="confirmpassword"
-               placeholder="Confirme a sua Senha"
+               name="confirmPassword"
+               placeholder="Confirme a sua senha"
                handleOnChange={handleChange}
             />
             <input type='submit' value='Cadastrar' />
