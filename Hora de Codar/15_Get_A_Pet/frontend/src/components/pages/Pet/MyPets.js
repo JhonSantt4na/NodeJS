@@ -33,12 +33,11 @@ function MyPets() {
             },
          })
          .then((response) => {
-            const updatedPets = pets.filter((pet) => pet._id != id)
+            const updatedPets = pets.filter((pet) => pet._id !== id)
             setPets(updatedPets)
             return response.data
          })
          .catch((err) => {
-            console.log(err)
             msgType = 'error'
             return err.response.data
          })
