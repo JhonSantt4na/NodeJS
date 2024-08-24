@@ -13,11 +13,12 @@ function MyPets() {
    const { setFlashMessage } = useFlashMessage()
 
    useEffect(() => {
-      api.get('/pets/mypets', {
-         headers: {
-            Authorization: `Bearer ${JSON.parse(token)}`
-         }
-      })
+      api.
+         get('/pets/mypets', {
+            headers: {
+               Authorization: `Bearer ${JSON.parse(token)}`
+            }
+         })
          .then((response) => {
             setPets(response.data.pets)
          })
@@ -45,12 +46,31 @@ function MyPets() {
       setFlashMessage(data.message, msgType)
    }
 
-   async function concludeAdoption(id) { }
+   async function concludeAdoption(id) {
+      let msgType = 'success'
+
+      const data = await api
+         .patch(`/pets/conclude/${id}`, {
+            headers: {
+               Authorization: `Bearer ${JSON.parse(token)}`,
+            },
+         })
+         .then((response) => {
+            return response.data
+         })
+         .catch((err) => {
+            console.log(err)
+            msgType = 'error'
+            return err.response.data
+         })
+
+      setFlashMessage(data.message, msgType)
+   }
 
    return (
       <section>
          <div className={styles.petslist_header}>
-            <h1>Meus Pets Cadastrados</h1>
+            <h1>Meus Pets</h1>
             <Link to="/pet/add">Cadastrar Pet</Link>
          </div>
          <div className={styles.petslist_container}>
