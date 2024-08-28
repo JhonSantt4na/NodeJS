@@ -14,10 +14,20 @@ sudo docker build -t nomedocontainer .
    diretório atual.
 
 Logo após terminar a construção da imagem
-
 Comando 2:
 
 sudo docker run -p 3000:3000 -d santt4na/dockernode
+	docker run   		: comando principal do Docker para criar e iniciar um contêiner a partir de uma imagem especificada.
+	-p 3000:3000 		: Mapeia a porta 3000 do contêiner para a porta 3000 da sua máquina host.
+	-d 		        : Executa o contêiner em segundo plano 
+	santt4na/dockernode	: Especifica o nome da imagem Docker que será usada para criar o contêiner.
+--------------------------------------------------------------------------------------------------------------------------------------
+	esse comando vai iniciar um contêiner baseado na imagem santt4na/dockernode, expondo a aplicação que está rodando dentro dele
+	na porta 3000 do seu computador, permitindo acesso externo a essa aplicação através dessa porta.
 
+Logo após terminar a construçã
 Comando 3:
+
 sudo docker-compose up
+	docker-compose	: É uma ferramenta para definir e gerenciar aplicações Docker multi-contêiner.
+	up		: Inicia todos os serviços definidos no arquivo docker-compose.yml

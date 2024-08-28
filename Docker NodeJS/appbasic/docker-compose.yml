@@ -1,6 +1,13 @@
-version: "2.20.0"
+# version: Define a versão do arquivo de configuração do Docker Compose. A versão especifica a sintaxe e recursos disponíveis para o arquivo.
+version: "2"
 
-services:
+# services: Define os contêineres que serão criados e gerenciados pelo Docker Compose. Cada serviço é um contêiner Docker que você deseja executar.
+  # app: Nome do serviço. É um nome que você dá ao seu contêiner. Pode ser qualquer nome que você escolha.
+    # build: Define o caminho para o Dockerfile que será usado para construir a imagem do contêiner. No seu caso, o ponto (.) significa que o Dockerfile está no mesmo diretório que o arquivo docker-compose.yml.
+    # command: Sobrescreve o comando padrão especificado no Dockerfile para o contêiner. No seu caso, o comando npm start será executado quando o contêiner for iniciado. Isso geralmente inicia o servidor da aplicação Node.js.
+    # ports: Mapeia as portas do contêiner para as portas do host. A sintaxe "3000:3000" indica que a porta 3000 do contêiner será mapeada para a porta 3000 do host. Isso permite acessar a aplicação do contêiner via localhost:3000 no seu navegador.
+    # volumes: Define os volumes que serão montados no contêiner. No seu caso, .:/usr/app mapeia o diretório atual (.) no host para o diretório /usr/app dentro do contêiner. Isso significa que quaisquer alterações feitas nos arquivos do diretório atual no host serão refletidas no contêiner e vice-versa. É útil para desenvolvimento, pois permite que você edite o código no host e veja as mudanças refletidas imediatamente no contêiner.
+services: 
   app:
     build: .
     command: npm start
@@ -8,3 +15,9 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/app
+
+# Sintaxe Específica do YAML
+# Indentação: O YAML usa indentação para definir a hierarquia dos dados. A indentação é geralmente feita com dois espaços, e não com tabulações. A indentação é crucial para a sintaxe correta do YAML.
+# Listas: Listas são representadas por itens precedidos por um hífen (-). No seu caso, ports e volumes são listas de strings.
+# Mapas: Mapas (ou dicionários) são representados por pares chave-valor separados por dois pontos (:). No seu exemplo, services é um mapa onde a chave é app e o valor é outro mapa com a configuração do serviço.
+
