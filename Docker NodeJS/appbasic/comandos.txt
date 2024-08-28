@@ -1,0 +1,23 @@
+Logo apos a configuração usamos:
+
+Comando 1:
+
+sudo docker build -t nomedocontainer .
+
+   docker build    : Constrói uma nova imagem Docker.
+   - t             : é uma flag que significa "tag", que permite nomear e atribuir uma tag à imagem que está sendo criada.
+   nomedocontainer : Nomeia essa imagem como 'nomedocontainer'.
+   .               : Baseia-se nas instruções definidas no Dockerfile encontrado no diretório atual.
+   ------------------------------------------------------------------------------------------------------------------------
+   é usado para construir uma imagem Docker
+   a partir de um Dockerfile presente no
+   diretório atual.
+
+Logo após terminar a construção da imagem
+
+Comando 2:
+
+sudo docker run -p 3000:3000 -d santt4na/dockernode
+
+Comando 3:
+sudo docker-compose up
