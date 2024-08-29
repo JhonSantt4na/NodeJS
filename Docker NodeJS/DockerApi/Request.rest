@@ -1,0 +1,10 @@
+GET http://localhost:3000/usuarios/all
+###
+
+POST http://localhost:3000/usuarios/cadastro
+###
+
+PATCH  http://localhost:3000/usuarios/update
+###
+
+DELETE http://localhost:3000/usuarios/delete
