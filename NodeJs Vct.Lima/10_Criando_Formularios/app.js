@@ -1,6 +1,7 @@
 const express = require('express');
 const hdbs = require('express-handlebars')
 const Sequelize = require('sequelize');
+const path = require('path');
 require('dotenv').config()
 
 const host = process.env.DB_HOST
@@ -20,6 +21,11 @@ const sequelize = new Sequelize(dbs, user, pass, {
    dialect: 'mysql'
 })
 
+// Criando Rotas
+app.get('/cadastro', (req, res) => {
+   // Redenrizando o formulario
+   res.render('formulario')
+})
 app.listen(3000, () => {
    console.log('Servidor rodando em: http://localhost:3000')
 })
