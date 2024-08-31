@@ -7,24 +7,17 @@ const pass = process.env.DB_PASS
 const user = process.env.DB_USER
 const dbs = process.env.DB_DBS
 
+//concetar ao banco
+const sequelize = new Sequelize(dbs, user, pass, {
+   host: host,
+   dialect: 'mysql'
+})
 
-// Função para concetar ao banco
-async function conn(host, pass, user, dbs) {
-   const sequelize = new Sequelize(dbs, user, pass, {
-      host: host,
-      dialect: 'mysql'
-   })
-
-   await sequelize.authenticate().then(() => {
-      console.log('Conectado ao Banco de Dados')
-   }).catch((err) => {
-      console.log('Erro ao conectar ao Banco de Dados', err)
-   })
-}
-
-
-// Chamando a funçao de conexão
-conn(host, pass, user, dbs)
+sequelize.authenticate().then(() => {
+   console.log('Conectado ao Banco de Dados')
+}).catch((err) => {
+   console.log('Erro ao conectar ao Banco de Dados', err)
+})
 
 const app = express()
 
