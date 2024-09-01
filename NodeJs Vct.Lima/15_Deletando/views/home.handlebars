@@ -1,0 +1,10 @@
+<h1>Lista de posts: </h1>
+{{!-- Quando recebemos uma estrutura com mais de um item usamos o seguinte metodo --}}
+{{!-- each = Cada ou seja Para cada postagem  --}}
+{{#each posts}}
+   <small>{{createdAt}}</small>
+   <h1>{{titulo}}</h1>
+   <p>{{conteudo}}</p>
+   <a href="/deletar/{{dataValues.id}}"><button>Deletar</button></a>   
+   <hr>
+{{/each}}

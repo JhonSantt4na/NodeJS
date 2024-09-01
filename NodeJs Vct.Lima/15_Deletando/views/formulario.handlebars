@@ -1,0 +1,15 @@
+{{!-- Não usamos a instrutura html pois usamos o main como layout principal,
+dai basta ultilizar o nosso conteudo --}}
+{{!-- Temos dois methods para enviar o form para o backend
+POST = Não envia nada pela url
+GET = Envia pela URL (Menos Seguro) --}}
+
+
+<form action="/add" method="POST">
+   <p>Titulo: </p>
+   <input type="text" name="titulo">
+    {{!--Nome são importantes para pegar o valor pelo backend  --}}
+   <p>Conteúdo: </p>
+   <textarea name="conteudo"></textarea>
+   <button type="submit">Cadastrar Postagem</button>
+</form>
