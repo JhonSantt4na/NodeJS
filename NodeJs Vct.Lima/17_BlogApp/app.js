@@ -12,6 +12,15 @@ app.use(express.json())
 app.use(express.urlencoded({
    extended: true
 }))
+// Mongoose
+mongoose.connect('mongodb://localhost:27017/BlogApp')
+   .then(() => {
+      console.log('Conectado ao Mongo')
+   })
+   .catch((err) => {
+      console.log('Erro Ao Conectar no Mongo', err)
+   })
+
 // Public
 app.use(express.static(path.join(__dirname, "public")))
 app.set('views', path.join(__dirname, 'views'));
