@@ -121,7 +121,6 @@ router.get('/postagens', (req, res) => {
       .populate("categoria")
       .sort({ data: 'desc' })
       .then((postagens) => {
-         console.log(postagens)
          res.render('admin/postagens', { postagens })
       }).catch((err) => {
          req.flash("error_msg", "Houve um erro ao listar postagens")
@@ -167,6 +166,48 @@ router.post('/postagens/nova', (req, res) => {
          })
    }
 
+})
+
+router.get('/postagens/edit/:id', (req, res) => {
+   Postagem.findOne({ _id: req.params.id }).lean().then((postagem) => {
+      Categoria.find().lean().then((categorias) => {
+         res.render('admin/editpostagens', {
+            postagem: postagem,
+            categorias: categorias
+         })
+      }).catch((err) => {
+         req.flash("error_msg", "Houve um erro ao listar as categorias")
+         res.redirect('/admin/postagens')
+      })
+   }).catch((err) => {
+      req.flash("error_msg", "Houve um erro ao carregar o formulério de edição")
+      res.redirect('/admin/postagens')
+   })
+})
+
+router.post('/postagens/edit', (req, res) => {
+   Postagem.findOne({ _id: req.body.id })
+      .then((postagem) => {
+         postagem.titulo = req.body.titulo
+         postagem.slug = req.body.slug
+         postagem.descricao = req.body.slug
+         postagem.conteudo = req.body.conteudo
+         postagem.categoria = req.body.categoria
+
+         postagem.save().then(() => {
+            req.flash('success_msg', 'Postagem editada com sucesso!')
+            res.redirect('/admin/postagens')
+         }).catch((err) => {
+            console.log(postagem)
+            req.flash('error_msg', "Houve um erro ao salvar a edição da postagem")
+            res.redirect('/admin/postagens')
+         })
+      })
+      .catch((err) => {
+         console.log(err)
+         req.flash("error_msg", "Houve um erro ao Editar a postagem, Tente Novamente!");
+         res.redirect('/admin/postagens');
+      })
 })
 
 module.exports = router;
