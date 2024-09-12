@@ -5,12 +5,9 @@ const mongoose = require('mongoose')
 const admin = require('./routes/Admin')
 const path = require('path')
 const session = require('express-session');
-const flsh = require('connect-flash');
 const flash = require('connect-flash/lib/flash');
 
-
 const app = express()
-
 
 // Configurações
 app.use(express.json())
@@ -48,8 +45,6 @@ app.set('views', path.join(__dirname, 'views'));
 // handlebars
 app.engine('handlebars', hdbs.engine({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
-
-// Mongoose
 
 // Rotas
 app.use('/admin', admin)

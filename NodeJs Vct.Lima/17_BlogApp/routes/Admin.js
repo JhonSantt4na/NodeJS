@@ -10,8 +10,18 @@ const Postagem = require('../models/Postagem');
 
 // Rotas
 router.get('/', (req, res) => {
-   res.render('admin/index');
+   Postagem.find().populate("categoria").sort({ data: "desc" }).lean()
+      .then((postagens) => {
+         res.render('index', { postagens });
+      }).catch(() => {
+         req.flash("error_msg", "Houve um erro interno");
+         res.redirect("/404");
+      });
 });
+
+router.get('/404', (req, res) => {
+   res.send('Erro 404!')
+})
 
 router.get('/posts', (req, res) => {
    res.send('Página de posts');
@@ -128,6 +138,26 @@ router.get('/postagens', (req, res) => {
       })
 
 })
+
+router.get('/postagem/:slug', (req, res) => {
+   Postagem.findOne({ slug: req.params.slug }).lean()
+      .then((postagem) => {
+         if (postagem) {
+            const post = {
+               titulo: postagem.titulo,
+               data: postagem.data,
+               conteudo: postagem.conteudo
+            }
+            res.render('postagem/index', post);
+         } else {
+            req.flash("error_msg", "Esta Postagem não existe!");
+            res.redirect('/');
+         }
+      }).catch((err) => {
+         req.flash("error_msg", "Houve um erro interno");
+         res.redirect('/');
+      });
+});
 
 router.get('/postagens/add', (req, res) => {
    Categoria.find().lean()

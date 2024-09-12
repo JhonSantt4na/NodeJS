@@ -1,0 +1,23 @@
+<div class="jumbotron">
+   <h1 class="display-2">Bem-vindo ao BlogApp</h1>
+   <p class="lead">Compartilhe suas ideias e inspire o mundo! Crie, poste e conecte-se com uma comunidade que valoriza suas histórias.</p>
+   <p class="lead">
+      <a class="btn btn-primary btn-lg" role="button" href="#">Crie uma Conta!</a>
+   </p>
+   <hr class="my-4">
+</div>
+<h2>Postagens Recentes</h2>
+{{#each postagens}}
+   <div class="card mt-4">
+      <div class="card-body">
+         <h3>{{titulo}}</h3>
+         <p>{{descricao}}</p>
+         <a href="/admin/postagem/{{slug}}"><button class="btn btn-info">Leia mais</button></a>
+         <hr>
+         <small>Categoria: {{categoria.nome}}</small> <br>
+         <small>Data de Publicação: {{data}}</small>
+      </div>
+   </div>
+{{else}}
+   <p>Nenhuma postagem encontrada.</p>
+{{/each}}
