@@ -27,16 +27,7 @@ router.get('/posts', (req, res) => {
    res.send('Página de posts');
 });
 
-router.get('/categorias', (req, res) => {
-   Categoria.find().sort({ date: 'desc' }).lean()
-      .then((categorias) => {
-         res.render('admin/categorias', { categorias });
-      })
-      .catch((err) => {
-         req.flash("error_msg", "Houve um Erro ao Listar as Categorias");
-         res.redirect('/admin');
-      });
-});
+
 
 router.post('/categorias/nova', (req, res) => {
    // Validações

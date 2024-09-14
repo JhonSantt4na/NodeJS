@@ -7,6 +7,9 @@ const path = require('path')
 const session = require('express-session');
 const flash = require('connect-flash/lib/flash');
 
+const Categoria = require('./models/Categoria')
+const Postagem = require('./models/Postagem');
+
 const app = express()
 
 // Configurações
@@ -48,6 +51,17 @@ app.set('view engine', 'handlebars');
 
 // Rotas
 app.use('/admin', admin)
+
+app.get('/categorias', (req, res) => {
+   Categoria.find().sort({ date: 'desc' }).lean()
+      .then((categorias) => {
+         res.render('admin/categorias', { categorias });
+      })
+      .catch((err) => {
+         req.flash("error_msg", "Houve um Erro ao Listar as Categorias");
+         res.redirect('/admin');
+      });
+});
 
 // Outros
 const PORT = 3000
