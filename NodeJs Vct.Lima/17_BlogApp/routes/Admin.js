@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 
-// Importa o modelo Categoria
+// Importa Schemas
 const Categoria = require('../models/Categoria');
 const Postagem = require('../models/Postagem');
 

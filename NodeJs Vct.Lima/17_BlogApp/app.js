@@ -2,13 +2,17 @@
 const express = require('express');
 const hdbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const admin = require('./routes/Admin')
 const path = require('path')
 const session = require('express-session');
 const flash = require('connect-flash/lib/flash');
 
+// Rotas Imports
+const usuarios = require('./routes/Usuario');
+const admin = require('./routes/Admin')
+
+// Schemas Imports
 const Categoria = require('./models/Categoria')
-const Postagem = require('./models/Postagem');
+const Postagem = require('./models/Postagem')
 
 const app = express()
 
@@ -25,6 +29,7 @@ app.use(session({
    saveUninitialized: true
 }))
 app.use(flash())
+
 // Middleware
 app.use((req, res, next) => {
    // Variaveis Globais: Usase em qualquer parte do codigo
@@ -45,13 +50,12 @@ mongoose.connect('mongodb://localhost:27017/BlogApp')
 // Public
 app.use(express.static(path.join(__dirname, "public")))
 app.set('views', path.join(__dirname, 'views'));
+
 // handlebars
 app.engine('handlebars', hdbs.engine({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
 
 // Rotas
-
-
 app.get('/', (req, res) => {
    Postagem.find().populate("categoria").sort({ data: "desc" }).lean()
       .then((postagens) => {
@@ -125,6 +129,8 @@ app.get('/404', (req, res) => {
 })
 
 app.use('/admin', admin)
+app.use('/usuarios', usuarios)
+
 // Outros
 const PORT = 3000
 app.listen(PORT, () => {
