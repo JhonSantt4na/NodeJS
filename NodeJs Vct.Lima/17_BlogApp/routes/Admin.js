@@ -9,25 +9,17 @@ const Postagem = require('../models/Postagem');
 
 
 // Rotas
-router.get('/', (req, res) => {
-   Postagem.find().populate("categoria").sort({ data: "desc" }).lean()
-      .then((postagens) => {
-         res.render('index', { postagens });
-      }).catch(() => {
-         req.flash("error_msg", "Houve um erro interno");
-         res.redirect("/404");
+
+router.get('/categorias', (req, res) => {
+   Categoria.find().sort({ date: 'desc' }).lean()
+      .then((categorias) => {
+         res.render('admin/categorias', { categorias });
+      })
+      .catch((err) => {
+         req.flash("error_msg", "Houve um Erro ao Listar as Categorias");
+         res.redirect('/admin/categorias');
       });
 });
-
-router.get('/404', (req, res) => {
-   res.send('Erro 404!')
-})
-
-router.get('/posts', (req, res) => {
-   res.send('Página de posts');
-});
-
-
 
 router.post('/categorias/nova', (req, res) => {
    // Validações
@@ -64,7 +56,7 @@ router.post('/categorias/nova', (req, res) => {
          })
          .catch((err) => {
             req.flash("error_msg", "Houve um Erro ao Salvar a Categoria, Tente Novamente!");
-            res.redirect('/admin');
+            res.redirect('/');
          });
    }
 });
@@ -125,30 +117,10 @@ router.get('/postagens', (req, res) => {
          res.render('admin/postagens', { postagens })
       }).catch((err) => {
          req.flash("error_msg", "Houve um erro ao listar postagens")
-         res.redirect('/admin')
+         res.redirect('/')
       })
 
 })
-
-router.get('/postagem/:slug', (req, res) => {
-   Postagem.findOne({ slug: req.params.slug }).lean()
-      .then((postagem) => {
-         if (postagem) {
-            const post = {
-               titulo: postagem.titulo,
-               data: postagem.data,
-               conteudo: postagem.conteudo
-            }
-            res.render('postagem/index', post);
-         } else {
-            req.flash("error_msg", "Esta Postagem não existe!");
-            res.redirect('/');
-         }
-      }).catch((err) => {
-         req.flash("error_msg", "Houve um erro interno");
-         res.redirect('/');
-      });
-});
 
 router.get('/postagens/add', (req, res) => {
    Categoria.find().lean()
@@ -157,7 +129,7 @@ router.get('/postagens/add', (req, res) => {
       })
       .catch((err) => {
          req.flash("error_msg", "Houve um erro ao carregar o Formulário")
-         res.redirect('/admin')
+         res.redirect('/')
       })
 })
 
@@ -186,7 +158,6 @@ router.post('/postagens/nova', (req, res) => {
             res.redirect('/admin/postagens')
          })
    }
-
 })
 
 router.get('/postagens/edit/:id', (req, res) => {

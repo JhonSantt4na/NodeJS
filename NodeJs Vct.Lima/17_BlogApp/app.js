@@ -50,19 +50,81 @@ app.engine('handlebars', hdbs.engine({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars');
 
 // Rotas
-app.use('/admin', admin)
 
-app.get('/categorias', (req, res) => {
-   Categoria.find().sort({ date: 'desc' }).lean()
-      .then((categorias) => {
-         res.render('admin/categorias', { categorias });
-      })
-      .catch((err) => {
-         req.flash("error_msg", "Houve um Erro ao Listar as Categorias");
-         res.redirect('/admin');
+
+app.get('/', (req, res) => {
+   Postagem.find().populate("categoria").sort({ data: "desc" }).lean()
+      .then((postagens) => {
+         res.render('index', { postagens });
+      }).catch(() => {
+         req.flash("error_msg", "Houve um erro interno");
+         res.redirect("/404");
       });
 });
 
+app.get('/postagem/:slug', (req, res) => {
+   Postagem.findOne({ slug: req.params.slug }).lean()
+      .then((postagem) => {
+         if (postagem) {
+            const post = {
+               titulo: postagem.titulo,
+               data: postagem.data,
+               conteudo: postagem.conteudo
+            }
+            res.render('postagem/index', post);
+         } else {
+            req.flash("error_msg", "Esta Postagem não existe!");
+            res.redirect('/');
+         }
+      }).catch((err) => {
+         req.flash("error_msg", "Houve um erro interno");
+         res.redirect('/');
+      });
+});
+
+app.get('/categorias', (req, res) => {
+   Categoria.find().lean().then((categoria) => {
+      res.render('categorias/index', { categoria })
+   }).catch((err) => {
+      req.flash("error_msg", "Houve um erro interno ao iniciar as categorias")
+      res.redirect('/')
+   })
+})
+
+app.get('/categorias/:slug', (req, res) => {
+   Categoria.findOne({ slug: req.params.slug }).lean()
+      .then((categoria) => {
+         if (categoria) {
+
+            // Busca postagens que pertencem à categoria encontrada
+            Postagem.find({ categoria: categoria._id }).lean()
+               .then((postagens) => {
+                  res.render('categorias/postagens', {
+                     postagens: postagens, // Passando as postagens
+                     categoria: categoria  // Passando a categoria
+                  });
+               })
+               .catch((err) => {
+                  req.flash("error_msg", "Houve um erro ao listar os posts!");
+                  res.redirect('/');
+               });
+
+         } else {
+            req.flash("error_msg", "Esta categoria não existe");
+            res.redirect('/');
+         }
+      })
+      .catch((err) => {
+         req.flash("error_msg", "Houve um erro interno ao listar as categorias");
+         res.redirect('/');
+      });
+});
+
+app.get('/404', (req, res) => {
+   res.send('Erro 404!')
+})
+
+app.use('/admin', admin)
 // Outros
 const PORT = 3000
 app.listen(PORT, () => {
