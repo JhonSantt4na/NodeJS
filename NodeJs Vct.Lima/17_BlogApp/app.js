@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 const session = require('express-session');
 const flash = require('connect-flash/lib/flash');
+const db = require('./config/db')
 
 // Config Passport
 const passport = require('passport')
@@ -52,7 +53,7 @@ app.use((req, res, next) => {
 })
 
 // Mongoose
-mongoose.connect('mongodb://localhost:27017/BlogApp')
+mongoose.connect(db.mongoURI)
    .then(() => {
       console.log('Conectado ao Mongo')
    })
@@ -145,7 +146,7 @@ app.use('/admin', admin)
 app.use('/usuarios', usuarios)
 
 // Outros
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
    console.log('Server is Runing!')
 })
